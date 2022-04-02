@@ -1,0 +1,16 @@
+[workspace]
+
+members = [
+  "percolation",
+  "percolationstats",
+  "percolationvisualizer",
+  "interactivepercolationvisualizer",
+]
+
+[profile.dev]
+panic = 'abort'
+
+[profile.release]
+lto = true
+panic = 'abort'
+strip = true

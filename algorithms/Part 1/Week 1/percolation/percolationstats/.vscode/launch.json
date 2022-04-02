@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Run Test Debugger",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/deps/percolationstats-c7cea238c81caca5.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "preLaunchTask": "cargo test build",
+        }
+    ]
+}

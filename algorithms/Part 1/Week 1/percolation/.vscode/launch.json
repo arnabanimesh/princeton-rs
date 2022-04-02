@@ -1,0 +1,604 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'percolation'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=percolation"
+                ],
+                "filter": {
+                    "name": "percolation",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'weightedquickunion'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=weightedquickunion"
+                ],
+                "filter": {
+                    "name": "weightedquickunion",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'percolationstats'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=percolationstats"
+                ],
+                "filter": {
+                    "name": "percolationstats",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'statsdemo'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=statsdemo",
+                    "--package=percolationstats"
+                ],
+                "filter": {
+                    "name": "statsdemo",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'statsdemo'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=statsdemo",
+                    "--package=percolationstats"
+                ],
+                "filter": {
+                    "name": "statsdemo",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'percolationvisualizer'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=percolationvisualizer",
+                    "--package=percolationvisualizer"
+                ],
+                "filter": {
+                    "name": "percolationvisualizer",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "input3.txt"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'percolationvisualizer'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=percolationvisualizer",
+                    "--package=percolationvisualizer"
+                ],
+                "filter": {
+                    "name": "percolationvisualizer",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'minifb'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "minifb",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'char_callback'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=char_callback",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "char_callback",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'char_callback'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=char_callback",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "char_callback",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'drop'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=drop",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "drop",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'drop'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=drop",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "drop",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'icon'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=icon",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "icon",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'icon'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=icon",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "icon",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'image'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=image",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "image",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'image'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=image",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "image",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'julia'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=julia",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "julia",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'julia'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=julia",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "julia",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'menu'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=menu",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "menu",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'menu'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=menu",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "menu",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'mouse'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=mouse",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "mouse",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'mouse'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=mouse",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "mouse",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'multi'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=multi",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "multi",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'multi'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=multi",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "multi",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'noise'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=noise",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "noise",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'noise'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=noise",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "noise",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'title_cursor'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=title_cursor",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "title_cursor",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'title_cursor'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=title_cursor",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "title_cursor",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'topmost'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=topmost",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "topmost",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'topmost'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=topmost",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "topmost",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'transparent'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=transparent",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "transparent",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'transparent'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=transparent",
+                    "--package=minifb"
+                ],
+                "filter": {
+                    "name": "transparent",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
