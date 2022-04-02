@@ -4,77 +4,21 @@ use conv::ValueInto;
 
 use rusttype::{point, Font, PositionedGlyph, Rect, Scale};
 use std::cmp::max;
-
-/// A surface for drawing on - many drawing functions in this
-/// library are generic over a `Canvas` to allow the user to
-/// configure e.g. whether to use blending.
-///
-/// All instances of `GenericImage` implement `Canvas`, with
-/// the behaviour of `draw_pixel` being equivalent to calling
-/// `set_pixel` with the same arguments.
-///
-/// See [`Blend`](struct.Blend.html) for another example implementation
-/// of this trait - its implementation of `draw_pixel` alpha-blends
-/// the input value with the pixel's current value.
-///
-/// # Examples
-/// ```
-/// # extern crate image;
-/// # #[macro_use]
-/// # extern crate imageproc;
-/// # fn main() {
-/// use image::{Pixel, Rgba, RgbaImage};
-/// use imageproc::drawing::{Canvas, Blend};
-///
-/// // A trivial function which draws on a Canvas
-/// fn write_a_pixel<C: Canvas>(canvas: &mut C, c: C::Pixel) {
-///     canvas.draw_pixel(0, 0, c);
-/// }
-///
-/// // Background color
-/// let solid_blue = Rgba([0u8, 0u8, 255u8, 255u8]);
-///
-/// // Drawing color
-/// let translucent_red = Rgba([255u8, 0u8, 0u8, 127u8]);
-///
-/// // Blended combination of background and drawing colors
-/// let mut alpha_blended = solid_blue;
-/// alpha_blended.blend(&translucent_red);
-///
-/// // The implementation of Canvas for GenericImage overwrites existing pixels
-/// let mut image = RgbaImage::from_pixel(1, 1, solid_blue);
-/// write_a_pixel(&mut image, translucent_red);
-/// assert_eq!(*image.get_pixel(0, 0), translucent_red);
-///
-/// // This behaviour can be customised by using a different Canvas type
-/// let mut image = Blend(RgbaImage::from_pixel(1, 1, solid_blue));
-/// write_a_pixel(&mut image, translucent_red);
-/// assert_eq!(*image.0.get_pixel(0, 0), alpha_blended);
-/// # }
-/// ```
 pub(super) trait Canvas {
-    /// The type of `Pixel` that can be drawn on this canvas.
     type Pixel: Pixel;
 
-    /// The width and height of this canvas.
     fn dimensions(&self) -> (u32, u32);
 
-    /// The width of this canvas.
     fn width(&self) -> u32 {
         self.dimensions().0
     }
 
-    /// The height of this canvas.
     fn height(&self) -> u32 {
         self.dimensions().1
     }
 
-    /// Returns the pixel located at (x, y).
     fn get_pixel(&self, x: u32, y: u32) -> Self::Pixel;
 
-    /// Draw a pixel at the given coordinates. `x` and `y`
-    /// should be within `dimensions` - if not then panicking
-    /// is a valid implementation behaviour.
     fn draw_pixel(&mut self, x: u32, y: u32, color: Self::Pixel);
 }
 
@@ -97,10 +41,6 @@ where
     }
 }
 
-/// A canvas that blends pixels when drawing.
-///
-/// See the documentation for [`Canvas`](trait.Canvas.html)
-/// for an example using this type.
 struct Blend<I>(I);
 
 impl<I: GenericImage> Canvas for Blend<I> {
@@ -122,11 +62,9 @@ impl<I: GenericImage> Canvas for Blend<I> {
 }
 
 pub(super) trait Clamp<T> {
-    /// Clamp `x` to a valid value for this type.
     fn clamp(x: T) -> Self;
 }
 
-/// Creates an implementation of Clamp<From> for type To.
 macro_rules! implement_clamp {
     ($from:ty, $to:ty, $min:expr, $max:expr, $min_from:expr, $max_from:expr) => {
         impl Clamp<$from> for $to {
@@ -194,18 +132,10 @@ fn layout_glyphs(
     (w, h)
 }
 
-/// Get the width and height of the given text, rendered with the given font and scale.
-///
-/// Note that this function *does not* support newlines, you must do this manually.
 pub(super) fn text_size(scale: Scale, font: &Font, text: &str) -> (i32, i32) {
     layout_glyphs(scale, font, text, |_, _| {})
 }
 
-/// Draws colored text on an image in place.
-///
-/// `scale` is augmented font scaling on both the x and y axis (in pixels).
-///
-/// Note that this function *does not* support newlines, you must do this manually.
 pub(super) fn draw_text_mut<'a, C>(
     canvas: &'a mut C,
     color: C::Pixel,
