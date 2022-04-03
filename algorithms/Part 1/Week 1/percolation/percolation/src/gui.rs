@@ -8,13 +8,15 @@ use rusttype::{Font, Scale};
 use std::fs;
 
 pub const LENGTH: usize = 512;
-pub const SCALE: usize = 2; // scales the size of the saved image with respect to frame buffer canvas size
-pub const BLOCK_SIZE: f64 = 0.45; // takes value between 0 and 0.5; 0.5 means no gap between blocks, 0 means block size will not be visible
 pub const STATUS_HEIGHT: usize = 20;
+const SCALE: usize = 2; // scales the size of the saved image with respect to frame buffer canvas size
+const BLOCK_SIZE: f64 = 0.45; // takes value between 0 and 0.5; 0.5 means no gap between blocks, 0 means block size will not be visible
+
 pub const AREA: usize = LENGTH * LENGTH;
-pub const STATUS_AREA: usize = LENGTH * STATUS_HEIGHT;
-pub const SCALED_LEN: usize = LENGTH * SCALE;
-pub const STATUS_TEXT_HEIGHT: f32 = STATUS_HEIGHT as f32 * 0.7;
+const STATUS_AREA: usize = LENGTH * STATUS_HEIGHT;
+const SCALED_LEN: usize = LENGTH * SCALE;
+const STATUS_TEXT_HEIGHT: f32 = STATUS_HEIGHT as f32 * 0.7;
+const SCALED_STATUS_WINDOW: usize = SCALED_LEN + STATUS_HEIGHT * SCALE;
 
 pub const fn grayscale(color: u8) -> u32 {
     ((color as u32) << 16) | ((color as u32) << 8) | color as u32
@@ -146,7 +148,7 @@ pub fn save_screen(buffer: &mut Vec<u32>) {
                 Some("jpg" | "jpeg" | "png") => {
                     let img = image::ImageBuffer::from_fn(
                         SCALED_LEN as u32,
-                        SCALED_LEN as u32,
+                        SCALED_STATUS_WINDOW as u32,
                         |x, y| {
                             let buf_idx = buffer[y as usize / SCALE * LENGTH + x as usize / SCALE];
                             image::Rgb([(buf_idx >> 16) as u8, (buf_idx >> 8) as u8, buf_idx as u8])
@@ -164,16 +166,29 @@ pub fn save_screen(buffer: &mut Vec<u32>) {
 pub fn fill_rect(
     idx: usize,                 //xth column
     idy: usize,                 //yth row
-    side_length: usize,         //no. of rows or columns on a side
-    half_length: usize,         //length of rect / 2
+    n: usize,                   //no. of rows or columns on a side
+    half_length: usize,         //half_length of a square
     color: u32,                 //color of the rectangle
     colorbuffer: &mut Vec<u32>, //mutable color buffer for rendering frame buffer
 ) {
-    let centerx = (LENGTH as f64 * ((idx - 1) as f64 + 0.5) / side_length as f64) as usize;
-    let centery = (LENGTH as f64 * ((idy - 1) as f64 + 0.5) / side_length as f64) as usize;
-    for x in (centerx - half_length)..(centerx + half_length) {
-        for y in (centery - half_length)..(centery + half_length) {
-            colorbuffer[index(x, y)] = color;
+    let centerx = (LENGTH as f64 * ((idx - 1) as f64 + 0.5) / n as f64) as usize;
+    let centery = (LENGTH as f64 * ((idy - 1) as f64 + 0.5) / n as f64) as usize;
+    if n > 0 && half_length < 1 {
+        colorbuffer[index(centerx, centery)] = color;
+    } else {
+        for x in (centerx - half_length)..(centerx + half_length) {
+            for y in (centery - half_length)..(centery + half_length) {
+                colorbuffer[index(x, y)] = color;
+            }
         }
+    }
+}
+pub fn half_length(n: usize) -> usize {
+    match n {
+        0 => 0,
+        _ => std::cmp::min(
+            (0.5 * LENGTH as f64 / n as f64 - 0.5) as usize,
+            (BLOCK_SIZE * LENGTH as f64 / n as f64) as usize,
+        ),
     }
 }

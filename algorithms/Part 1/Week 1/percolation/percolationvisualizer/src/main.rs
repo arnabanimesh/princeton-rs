@@ -4,7 +4,7 @@ use minifb::{Icon, InputCallback, Key, Menu, Window, WindowOptions, MENU_KEY_CTR
 use percolation::{gui::*, Percolation};
 use std::{thread, time::Duration};
 
-const DELAY: u64 = 10000;
+const DELAY: u64 = 1000; // increase this value to slow the animation speed and vice versa
 
 const OPEN_INPUT: usize = 1;
 const SAVE_SCREEN: usize = 2;
@@ -80,10 +80,12 @@ fn main() {
         } else {
             thread::sleep(Duration::from_millis(100));
         }
+        let mut offscreenbuffer = buffer.clone();
+        offscreenbuffer.extend(draw_status_bar(&perc, init, &font));
         if let Some(menu_id) = window.is_menu_pressed() {
             match menu_id {
                 SAVE_SCREEN => {
-                    save_screen(&mut buffer);
+                    save_screen(&mut offscreenbuffer);
                 }
                 OPEN_INPUT => {
                     input_file = open();
@@ -92,16 +94,13 @@ fn main() {
                         n_deref = *n;
                         buffer = vec![0; AREA];
                         perc = Percolation::new(n_deref);
-                        block_half_length = (LENGTH as f64 / n_deref as f64 * BLOCK_SIZE) as usize;
+                        block_half_length = half_length(n_deref);
                         init = true;
                     }
                 }
                 _ => (),
             }
         }
-
-        let mut offscreenbuffer = buffer.clone();
-        offscreenbuffer.extend(draw_status_bar(&perc, init, &font));
 
         // We unwrap here as we want this code to exit if it fails
         window

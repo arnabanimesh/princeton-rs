@@ -65,7 +65,7 @@ fn main() {
     #[cfg(target_os = "windows")]
     window.set_icon(<Icon as std::str::FromStr>::from_str("percolation.ico").unwrap());
     let mut perc = Percolation::new(n);
-    let block_half_length = (LENGTH as f64 / n as f64 * BLOCK_SIZE) as usize;
+    let block_half_length = half_length(n);
     let mut leftclick = false;
     let font = set_font();
 
@@ -81,26 +81,37 @@ fn main() {
                 leftclick = window.get_mouse_down(MouseButton::Left);
             }
             if leftclick {
-                perc.open(idy, idx);
-                writeln!(&mut text_buf, "{} {}", idy, idx).unwrap();
-                for idx in 1..=n {
-                    for idy in 1..=n {
-                        if perc.is_open(idy, idx) {
-                            if perc.is_full(idy, idx) {
-                                fill_rect(idx, idy, n, block_half_length, 6801139, &mut buffer);
-                            //rgb(103,198,243)
-                            } else {
-                                fill_rect(idx, idy, n, block_half_length, 16777215, &mut buffer);
+                if idy <= n {
+                    perc.open(idy, idx);
+                    writeln!(&mut text_buf, "{} {}", idy, idx).unwrap();
+                    for idx in 1..=n {
+                        for idy in 1..=n {
+                            if perc.is_open(idy, idx) {
+                                if perc.is_full(idy, idx) {
+                                    fill_rect(idx, idy, n, block_half_length, 6801139, &mut buffer);
+                                //rgb(103,198,243)
+                                } else {
+                                    fill_rect(
+                                        idx,
+                                        idy,
+                                        n,
+                                        block_half_length,
+                                        16777215,
+                                        &mut buffer,
+                                    );
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        let mut offscreenbuffer = buffer.clone();
+        offscreenbuffer.extend(draw_status_bar(&perc, true, &font));
         if let Some(menu_id) = window.is_menu_pressed() {
             match menu_id {
                 SAVE_SCREEN => {
-                    save_screen(&mut buffer);
+                    save_screen(&mut offscreenbuffer);
                 }
                 SAVE_TEXT => {
                     save_text(&text_buf);
@@ -113,8 +124,6 @@ fn main() {
                 _ => {}
             }
         }
-        let mut offscreenbuffer = buffer.clone();
-        offscreenbuffer.extend(draw_status_bar(&perc, true, &font));
 
         // We unwrap here as we want this code to exit if it fails
         window
