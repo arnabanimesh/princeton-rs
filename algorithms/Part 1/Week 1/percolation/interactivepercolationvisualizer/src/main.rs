@@ -4,11 +4,11 @@ use minifb::{
     Icon, InputCallback, Key, Menu, MouseButton, MouseMode, Window, WindowOptions, MENU_KEY_CTRL,
 };
 use percolation::{gui::*, Percolation};
-use std::{env::args, fmt::Write};
+use std::fmt::Write;
 
 const SAVE_SCREEN: usize = 1;
 const SAVE_TEXT: usize = 2;
-const RESET: usize = 3;
+const NEW: usize = 3;
 
 struct KeyCharCallback;
 
@@ -19,15 +19,7 @@ impl InputCallback for KeyCharCallback {
 }
 
 fn main() {
-    if args().len() > 2 {
-        // Doesn't work if the windows_subsystem is enabled since terminal is not invoked
-        panic!("Usage: percolationvisualizer <grid side length in integer (default: 5)>");
-    }
-    let n = args()
-        .nth(1)
-        .unwrap_or_else(|| String::from("5"))
-        .parse::<usize>()
-        .unwrap();
+    let mut n = 5;
 
     let mut text_buf = String::with_capacity(AREA * 8);
 
@@ -47,15 +39,15 @@ fn main() {
     window.set_input_callback(Box::new(KeyCharCallback {}));
 
     let mut menu = Menu::new("File").unwrap();
+    menu.add_item("New", NEW)
+        .shortcut(Key::N, MENU_KEY_CTRL)
+        .build();
 
     menu.add_item("Save screenshot", SAVE_SCREEN)
         .shortcut(Key::S, MENU_KEY_CTRL)
         .build();
     menu.add_item("Save as text", SAVE_TEXT)
         .shortcut(Key::T, MENU_KEY_CTRL)
-        .build();
-    menu.add_item("Reset", RESET)
-        .shortcut(Key::R, MENU_KEY_CTRL)
         .build();
 
     if let Some(menus) = window.get_posix_menus() {
@@ -65,7 +57,7 @@ fn main() {
     #[cfg(target_os = "windows")]
     window.set_icon(<Icon as std::str::FromStr>::from_str("percolation.ico").unwrap());
     let mut perc = Percolation::new(n);
-    let block_half_length = half_length(n);
+    let mut block_half_length = half_length(n);
     let mut leftclick = false;
     let font = set_font();
 
@@ -116,10 +108,21 @@ fn main() {
                 SAVE_TEXT => {
                     save_text(&text_buf);
                 }
-                RESET => {
-                    buffer = vec![0; AREA];
-                    text_buf = String::with_capacity(AREA * 8);
-                    perc = Percolation::new(n);
+                NEW => {
+                    match input_box(
+                        "Start new percolation grid",
+                        "Enter new percolation grid size:",
+                        n.to_string().as_str(),
+                    ) {
+                        Ok(s) => {
+                            n = s;
+                            buffer = vec![0; AREA];
+                            text_buf = String::with_capacity(AREA * 8);
+                            perc = Percolation::new(n);
+                            block_half_length = half_length(n);
+                        }
+                        Err(e) => message_box("Invalid input entered", e.to_string().as_str()),
+                    }
                 }
                 _ => {}
             }

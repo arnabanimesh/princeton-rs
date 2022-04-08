@@ -3,9 +3,10 @@ use crate::gui::text::{draw_text_mut, text_size};
 use crate::Percolation;
 use font_kit::{handle::Handle, source::SystemSource};
 use image::{Rgb, RgbImage};
-use native_dialog::FileDialog;
+use native_dialog::{FileDialog, MessageDialog};
 use rusttype::{Font, Scale};
 use std::fs;
+use std::num::ParseIntError;
 
 pub const LENGTH: usize = 512;
 pub const STATUS_HEIGHT: usize = 20;
@@ -23,6 +24,23 @@ pub const fn grayscale(color: u8) -> u32 {
 }
 pub const fn index(x: usize, y: usize) -> usize {
     y * LENGTH + x
+}
+
+pub fn message_box(title: &str, message: &str) {
+    MessageDialog::new()
+        .set_title(title)
+        .set_text(&format!("{}", &message))
+        .show_alert()
+        .unwrap();
+}
+
+pub fn input_box(title: &str, message: &str, default: &str) -> Result<usize, ParseIntError> {
+    let user_input: String;
+    match tinyfiledialogs::input_box(&title, &message, &default) {
+        Some(input) => user_input = input,
+        None => user_input = "null".to_string(),
+    }
+    user_input.parse::<usize>()
 }
 
 pub fn set_font<'a>() -> Font<'a> {
