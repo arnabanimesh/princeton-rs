@@ -120,6 +120,7 @@ fn main() {
                             text_buf = String::with_capacity(AREA * 8);
                             perc = Percolation::new(n);
                             block_half_length = half_length(n);
+                            writeln!(&mut text_buf, "{}", n).unwrap();
                         }
                         Err(e) => message_box("Invalid input entered", e.to_string().as_str()),
                     }
