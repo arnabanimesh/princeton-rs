@@ -6,7 +6,7 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-minifb = {version = "0.20.0", path = "../rust_minifb"}
+minifb = "0.23.0"
 percolation = {version = "0.1.0", path = "../percolation"}
 
 [target.'cfg(windows)'.build-dependencies]
